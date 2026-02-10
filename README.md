@@ -177,8 +177,8 @@ is
 
 It can be checked using the tool with the following commands:
 ```sh
-./EDS-BWTransform.sh sample/test/test
-./EDSBWTsearch sample/test/test sample/test/kmers.txt
+./EDS-BWTransform.sh sample/test/test test
+./EDSBWTsearch test sample/test/kmers.txt
 ```
 
 ## References
