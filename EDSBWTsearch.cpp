@@ -767,8 +767,7 @@ int EDSBWT::backwardSearch(string fileInput, string fileOutDecode, dataTypeNSeq 
 }
 
 #if RECOVERBW==1
-int EDSBWT::updateSingleIntervalBW(std::vector<rangeElementBW> &vectRange, FILE *InFileBWT, dataTypeNSeq k, dataTypedimAlpha currentPile, dataTypeNChar * counters, dataTypeNChar *numBlockCounter, dataTypeNChar * contInCurrentBlock, dataTypeNChar toRead, uchar *bufferBlock) {
-			
+int EDSBWT::updateSingleIntervalBW(std::vector<rangeElementBW> &vectRange, FILE *InFileBWT, dataTypeNSeq k, dataTypedimAlpha currentPile, dataTypeNChar * counters,  dataTypeNChar toRead, uchar *bufferBlock) {			
 				dataTypeNChar numBlock=0;
 				uchar foundSymbol = '\0';  //here, it is not useful
 				
