@@ -432,7 +432,7 @@ int EDSBWT::findMultipleDollarsBackward(std::vector<rangeElementBW> &vectRange, 
 				//	contInCurrentBlockEnd = contInCurrentBlockStart;
 				//}
 				
-				assert (updateSingleIntervalBW(vectRange, InFileBWT, k, currentPile, countersEnd, &numBlockCounterEnd, &contInCurrentBlockEnd, toRead, bufferBlock) == 1);
+				assert (updateSingleIntervalBW(vectRange, InFileBWT, k, currentPile, countersEnd, toRead, bufferBlock) == 1);
 				#if DEBUG == 1				
 					std::cerr << "\t UPDATED: numBlockCounterEnd " << numBlockCounterEnd << " contInCurrentBlockEnd " << contInCurrentBlockEnd << "\n";
 					std::cerr << "countersEnd:\t";
@@ -519,7 +519,7 @@ int EDSBWT::findMultipleDollarsBackward(std::vector<rangeElementBW> &vectRange, 
 						vectRange[k].startPosN --;   //So we compute rank until position First - 1
 						dataTypeNChar toRead = vectRange[k].startPosN;	
 
-						assert (updateSingleIntervalBW(vectRange, InFileBWT, k, currentPile, countersStart, &numBlockCounterStart, &contInCurrentBlockStart, toRead, bufferBlock) == 1);
+						assert (updateSingleIntervalBW(vectRange, InFileBWT, k, currentPile, countersStart, toRead, bufferBlock) == 1);
 						
 						//END
 						toRead = vectRange[k].endPosN;
@@ -533,7 +533,7 @@ int EDSBWT::findMultipleDollarsBackward(std::vector<rangeElementBW> &vectRange, 
 						//	}
 						//	contInCurrentBlockEnd = contInCurrentBlockStart;
 						//}
-						assert (updateSingleIntervalBW(vectRange, InFileBWT, k, currentPile, countersEnd, &numBlockCounterEnd, &contInCurrentBlockEnd, toRead, bufferBlock) == 1);
+						assert (updateSingleIntervalBW(vectRange, InFileBWT, k, currentPile, countersEnd, toRead, bufferBlock) == 1);
 						
 						for (dataTypedimAlpha i = 0 ; i < sizeAlpha; i++) {
 							countersDiff[i] =  countersEnd[i] - countersStart[i];
