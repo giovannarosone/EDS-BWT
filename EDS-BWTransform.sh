@@ -8,6 +8,11 @@ GSUFPATH="gsufsort"
 NAMEFILE=$1
 OUTPUT=$2
 
+if [[ "$(tail -c 1 "$NAMEFILE")" != "}" ]]; then
+    echo "ERROR: file .eds must end with }"
+    exit 1
+fi
+
 ./eds_to_fasta $NAMEFILE.eds $OUTPUT
 
 if [ $BCR -eq 1 ]
