@@ -328,9 +328,10 @@ int EDSBWT::findMultipleDollarsBackward(std::vector<rangeElementBW> &vectRange, 
 	dataTypeNChar * countersDiff = new dataTypeNChar[sizeAlpha];  //it counts the number of each symbol into the i-Pile-BWT 
 	dataTypeNChar * countersStart = new dataTypeNChar[sizeAlpha];
 	dataTypeNChar * countersEnd = new dataTypeNChar[sizeAlpha];
-	
-	dataTypeNChar numBlockCounterStart = 0, numBlockCounterEnd= 0, numBlock=0;   //number of the blocks read
-	dataTypeNChar contInCurrentBlockStart = 0, contInCurrentBlockEnd= 0;    //number of the symbols read
+
+	dataTypeNChar  numBlock=0;   //number of the blocks read
+	//dataTypeNChar numBlockCounterStart = 0, numBlockCounterEnd= 0, numBlock=0;   //number of the blocks read
+	//dataTypeNChar contInCurrentBlockStart = 0, contInCurrentBlockEnd= 0;    //number of the symbols read
 		
 	uchar *bufferBlock = new uchar[DIMBLOCK];
 	uchar foundSymbol = '\0';  //here, it is not useful
@@ -369,10 +370,11 @@ int EDSBWT::findMultipleDollarsBackward(std::vector<rangeElementBW> &vectRange, 
 				countersStart[i]=0;
 				countersEnd[i]=0;
 			}
-			numBlockCounterStart = 0, numBlock=0;   //number of the blocks read
-			contInCurrentBlockStart = 0;    //number of the symbols read
-			numBlockCounterEnd = 0, numBlock=0;   //number of the blocks read
-			contInCurrentBlockEnd = 0;    //number of the symbols read
+			numBlock=0;
+			//numBlockCounterStart = 0, numBlock=0;   //number of the blocks read
+			//contInCurrentBlockStart = 0;    //number of the symbols read
+			//numBlockCounterEnd = 0, numBlock=0;   //number of the blocks read
+			//contInCurrentBlockEnd = 0;    //number of the symbols read
 			
 			if (vectRange[k].startPosN <= vectRange[k].endPosN) {
 				vectRange[k].startPosN --;   //So we compute rank until position First - 1
@@ -406,8 +408,8 @@ int EDSBWT::findMultipleDollarsBackward(std::vector<rangeElementBW> &vectRange, 
 							#endif
 				assert (toRead <= numberRead);
 				
-				numBlockCounterStart = numBlock;
-				contInCurrentBlockStart = toRead;
+				//numBlockCounterStart = numBlock;
+				//contInCurrentBlockStart = toRead;
 				#if DEBUG == 1				
 					std::cerr << "\t UPDATE: numBlockCounterStart " << numBlockCounterStart << " contInCurrentBlockStart " << contInCurrentBlockStart << "\n";
 					std::cerr << "countersStart:\t";
@@ -418,6 +420,10 @@ int EDSBWT::findMultipleDollarsBackward(std::vector<rangeElementBW> &vectRange, 
 				
 				//END
 				toRead = vectRange[k].endPosN;
+
+				for (dataTypedimAlpha i = 0 ; i < sizeAlpha; i++) {
+						countersEnd[i] = 0;
+				}
 				//Commented since countersEnd already computes its value independently from counterStart
 				//if ( (dataTypeNChar)floor((long double)((toRead-1)/DIMBLOCK)) == numBlockCounterStart) {
 				//	for (dataTypedimAlpha i = 0 ; i < sizeAlpha; i++) {
@@ -436,12 +442,12 @@ int EDSBWT::findMultipleDollarsBackward(std::vector<rangeElementBW> &vectRange, 
 				#endif
 				
 				#if DEBUG == 1
-						std::cerr << "findMultipleDollarsBackward: counters (simboli presenti) countersDiff: \t";
+						std::cerr << "findMultipleDollarsBackward: counters (symbols read) countersDiff: \t";
 				#endif
 				
 				//Compute new positions
 				for (dataTypedimAlpha i = 0 ; i < sizeAlpha; i++) {
-					countersDiff[i] =  countersEnd[i] - countersStart[i];  //+1???
+					countersDiff[i] =  countersEnd[i] - countersStart[i];
 					
 							#if DEBUG == 1
 								std::cerr << " " << countersDiff[i];
@@ -463,8 +469,8 @@ int EDSBWT::findMultipleDollarsBackward(std::vector<rangeElementBW> &vectRange, 
 						indices_of_dollars_in_interval(searchOutput, rangeEle.pileN, rangeEle.startPosN, rangeEle.endPosN, n_kmer, occPos, rb_1, bsel_1);
 
 						//seqID.push_back(rangeEle);
-						countersStart[0] = countersEnd[0];  //For the next iteration
-						countersEnd[0] = 0;
+						//countersStart[0] = countersEnd[0];  //For the next iteration
+						//countersEnd[0] = 0;
 				}
 				//For the other symbols
 				for (dataTypedimAlpha i = 1 ; i < sizeAlpha; i++) {
@@ -484,16 +490,19 @@ int EDSBWT::findMultipleDollarsBackward(std::vector<rangeElementBW> &vectRange, 
 								#endif
 								vectRangeCopy.insert(std::end(vectRangeCopy), rangeEle);
 							}
-							countersStart[i] = countersEnd[i];  //For the next iteration
+							countersStart[i] = 0;
+							//countersStart[i] = countersEnd[i];  //For the next iteration
 							countersEnd[i] = 0;
 				}
-				numBlockCounterStart = numBlockCounterEnd;
-				contInCurrentBlockStart = contInCurrentBlockEnd;
+				countersStart[0] = 0;
+				countersEnd[0] = 0;
+				//numBlockCounterStart = numBlockCounterEnd;
+				//contInCurrentBlockStart = contInCurrentBlockEnd;
 			}
 			/////////////////////
 			
 			#if DEBUG == 1
-			std::cerr << "-->Prima del WHILE, numBlockCounterStart " << numBlockCounterStart << " contInCurrentBlockStart: " << contInCurrentBlockStart << " countersStart:\n";
+			std::cerr << "--> Before WHILE, numBlockCounterStart " << numBlockCounterStart << " contInCurrentBlockStart: " << contInCurrentBlockStart << " countersStart:\n";
 			for (dataTypedimAlpha i = 0 ; i < sizeAlpha; i++) {
 				std::cerr << " " << countersStart[i];
 			}
@@ -514,6 +523,9 @@ int EDSBWT::findMultipleDollarsBackward(std::vector<rangeElementBW> &vectRange, 
 						
 						//END
 						toRead = vectRange[k].endPosN;
+						for (dataTypedimAlpha i = 0 ; i < sizeAlpha; i++) {
+								countersEnd[i] = 0;
+						}
 						//Commented since countersEnd already computes its value independently from counterStart
 						//if ( (dataTypeNChar)floor((long double)((toRead-1)/DIMBLOCK)) == numBlockCounterStart) {
 						//	for (dataTypedimAlpha i = 0 ; i < sizeAlpha; i++) {
@@ -524,14 +536,13 @@ int EDSBWT::findMultipleDollarsBackward(std::vector<rangeElementBW> &vectRange, 
 						assert (updateSingleIntervalBW(vectRange, InFileBWT, k, currentPile, countersEnd, &numBlockCounterEnd, &contInCurrentBlockEnd, toRead, bufferBlock) == 1);
 						
 						for (dataTypedimAlpha i = 0 ; i < sizeAlpha; i++) {
-							countersDiff[i] =  countersEnd[i] - countersStart[i];  //+1???
+							countersDiff[i] =  countersEnd[i] - countersStart[i];
 						}
-						numBlockCounterStart = numBlockCounterEnd;
-						contInCurrentBlockStart = contInCurrentBlockEnd;
+						//numBlockCounterStart = numBlockCounterEnd;
+						//contInCurrentBlockStart = contInCurrentBlockEnd;
 						
 						//I have to update the value in vectTriple[k].posN, it must contain the position of the symbol in F
-						//Si potrebbe unire al precedente
-						if (countersDiff[0] > 0) { //Ci sono dei dollari, va chiamato link
+						if (countersDiff[0] > 0) {
 							rangeEle.startPosN = vectRange[k].startPosN + 1; //Avevamo sottratto 1
 							rangeEle.endPosN = vectRange[k].endPosN;
 							//rangeEle.seqN = vectRange[k].seqN;
@@ -541,8 +552,8 @@ int EDSBWT::findMultipleDollarsBackward(std::vector<rangeElementBW> &vectRange, 
 							indices_of_dollars_in_interval(searchOutput, rangeEle.pileN, rangeEle.startPosN, rangeEle.endPosN, n_kmer, occPos, rb_1, bsel_1);
 
 							//seqID.push_back(rangeEle);
-							countersStart[0] = countersEnd[0];  //For the next iteration
-							countersEnd[0] = 0;
+							//countersStart[0] = countersEnd[0];  //For the next iteration
+							//countersEnd[0] = 0;
 							
 						}
 						//For each other symbol in the range
@@ -561,11 +572,14 @@ int EDSBWT::findMultipleDollarsBackward(std::vector<rangeElementBW> &vectRange, 
 								//rangeEle.seqN = vectRange[k].seqN;
 								vectRangeCopy.insert(std::end(vectRangeCopy), rangeEle);
 							}
-							countersStart[i] = countersEnd[i];  //For the next iteration
+							//countersStart[i] = countersEnd[i];  //For the next iteration
+							countersStart[i] = 0;
 							countersEnd[i] = 0;
 						}
-						numBlockCounterStart = numBlockCounterEnd;
-						contInCurrentBlockStart = contInCurrentBlockEnd;				
+						countersStart[0] = 0;
+						countersEnd[0] = 0;
+						//numBlockCounterStart = numBlockCounterEnd;
+						//contInCurrentBlockStart = contInCurrentBlockEnd;				
 					}
 					
 				k++;
@@ -657,7 +671,7 @@ int EDSBWT::backwardSearch(string fileInput, string fileOutDecode, dataTypeNSeq 
 		assert(link(rb_1,bsel_1)==1);
 
 		#if DEBUG == 1
-		cerr<<"backwardSearch - dopo link (including merge)"<<"\n";
+		cerr<<"backwardSearch - after link (including merge)"<<"\n";
 		print_interval_number();
 		cerr << "vectRangeDollarPile (computed): ";
 		print(vectRangeDollarPile);		
@@ -767,22 +781,9 @@ int EDSBWT::updateSingleIntervalBW(std::vector<rangeElementBW> &vectRange, FILE 
 				}
 				//else toTead==0 --> numBlock=0
 		
-				
-				{
-					//We are in another block and we need to read a new block in the BWT
-					if(numBlock>0){
-					for (dataTypedimAlpha r=0; r<sizeAlpha; r++)
-						counters[r] =  vectorOcc[currentPile][r][(numBlock)-1];   //vectorOcc is indexed by 0, so we have numBlock-1
-					}
-					fseek (InFileBWT, numBlock*DIMBLOCK, 0);
-			
-					
-					dataTypeNChar numberRead = rankManySymbols(*InFileBWT, counters, toRead, &foundSymbol, bufferBlock);
-					assert (toRead <= numberRead); 
-				}
-				
-				*contInCurrentBlock=toRead;
-				*numBlockCounter = numBlock;
+				fseek (InFileBWT, numBlock*DIMBLOCK, 0);
+				dataTypeNChar numberRead = rankManySymbols(*InFileBWT, counters, toRead, &foundSymbol, bufferBlock);
+				assert (toRead <= numberRead); 
 										
 				#if DEBUG == 1				
 					std::cerr << "\n updateSingleIntervalBW UPDATE: numBlockCounter " << *numBlockCounter << " contInCurrentBlock(toRead) " << *contInCurrentBlock << "\n";				
