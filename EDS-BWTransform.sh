@@ -1,12 +1,13 @@
 #!/bin/bash
 
-BCR=1
+
 
 BCRPATH="BCR_LCP_GSA"
 GSUFPATH="gsufsort"
 
 NAMEFILE=$1
 OUTPUT=$2
+BCR=$3
 
 if [[ "$(tail -c 1 "$NAMEFILE")" != "}" ]]; then
     echo "ERROR: file .eds must end with }"
