@@ -62,9 +62,9 @@ make RECOVERBW=0
 To compute the EDS-BWT of an elastic degenerate string written in file input.eds, please run:
 
 ```sh
-./EDS-BWTransform.sh input output
+./EDS-BWTransform.sh input.eds output
 ```
-where output is used as the base name of the output files. By default, the script `EDS-BWTransform.sh` computes the extended Burrow-Wheeler transform of the collection of string in the eds by using BCR. However, one can choose to select gsufsort by setting BCR=0 in `EDS-BWTransform.sh`.  
+where output is used as the base name of the output files. By default, the script `EDS-BWTransform.sh` computes the extended Burrow-Wheeler transform of the collection of strings in the eds by using BCR. However, one can choose to select gsufsort by setting BCR=0 in `EDS-BWTransform.sh`.  
 
 To search one or more patterns, contained in file patterns, please run:
 ```sh
@@ -177,7 +177,7 @@ is
 
 It can be checked using the tool with the following commands:
 ```sh
-./EDS-BWTransform.sh sample/test/test test
+./EDS-BWTransform.sh sample/test/test.eds test
 ./EDSBWTsearch test sample/test/kmers.txt
 ```
 
