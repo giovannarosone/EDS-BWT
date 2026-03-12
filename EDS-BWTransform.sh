@@ -13,7 +13,7 @@ if [[ "$(tail -c 1 "$NAMEFILE")" != "}" ]]; then
     exit 1
 fi
 
-./eds_to_fasta $NAMEFILE.eds $OUTPUT
+./eds_to_fasta $NAMEFILE $OUTPUT
 
 if [ $BCR -eq 1 ]
 then
