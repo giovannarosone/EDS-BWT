@@ -59,7 +59,7 @@ make RECOVERBW=0
 
 ## Run
 
-To compute the EDS-BWT of an elastic degenerate string stored in input.eds, please run:
+To compute the EDS-BWT of an elastic degenerate string stored in `input.eds`, please run:
 
 ```sh
 ./EDS-BWTransform.sh input.eds output algo
