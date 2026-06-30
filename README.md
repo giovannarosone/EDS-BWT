@@ -66,7 +66,7 @@ To compute the EDS-BWT of an elastic degenerate string stored in `input.eds`, pl
 ```
 where `output` is used as the base name of the output files. The third parameter `algo` determines which algorithm is used to compute the extended Burrow–Wheeler transform of the collection of strings in the eds: set `algo` to `1` to use BCR; any other value causes the script to use gsufsort.
 
-To search one or more patterns, contained in file patterns, please run:
+To search one or more patterns, contained in file `patterns`, please run:
 ```sh
 ./EDSBWTsearch output patterns
 ```
